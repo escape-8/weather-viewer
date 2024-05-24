@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    \Illuminate\Support\Facades\Auth::attempt();
-    return view('welcome');
-});
+    return view('main');
+})->name('home');
+
