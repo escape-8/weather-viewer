@@ -1,1 +1,21 @@
 @import "bootstrap/dist/css/bootstrap.css";
+
+.mb-45 {
+    margin-bottom: 2rem !important;
+}
+
+.mb-6 {
+    margin-bottom: 4rem !important;
+}
+
+.mb-7 {
+    margin-bottom: 5rem !important;
+}
+
+.footer-height {
+    height: 50px;
+}
+
+.fs-7 {
+    font-size: 0.9rem !important;
+}
