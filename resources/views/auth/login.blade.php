@@ -36,7 +36,7 @@
                         <label class="form-check-label" for="rememberMe">Remember me</label>
                     </div>
                     <div>
-                        <a href="">Forgot your password?</a>
+                        <a href="{{ route('password.forgot') }}">Forgot your password?</a>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary align-self-center my-4 w-100">Login</button>
