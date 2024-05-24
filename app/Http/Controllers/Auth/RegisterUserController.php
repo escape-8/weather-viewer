@@ -28,6 +28,6 @@ class RegisterUserController extends Controller
         $validatedDTO = new CreateUserDTO($request->validated());
         $this->userRepository->addUser($validatedDTO);
 
-        return redirect()->route('user.login')->with('success', ['message' => 'User create successfully!']);
+        return redirect()->route('user.login')->with('status', 'User create successfully!');
     }
 }

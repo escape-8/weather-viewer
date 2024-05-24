@@ -5,8 +5,8 @@
 @endsection
 
 @section('flash')
-    @if (session('success.message'))
-        <div class="container alert alert-success mt-5">{{ session('success.message') }}</div>
+    @if (session('status'))
+        <div class="container alert alert-success mt-5">{{ session('status') }}</div>
     @endif
 @endsection
 
