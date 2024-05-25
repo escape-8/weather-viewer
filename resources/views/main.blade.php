@@ -1,5 +1,11 @@
 @extends('layout.app')
 
+@section('flash')
+    @if (session('status'))
+        <div class="container alert alert-success mt-5">{{ session('status') }}</div>
+    @endif
+@endsection
+
 @section('auth-buttons')
     @guest
         <div class="d-flex gap-2">
