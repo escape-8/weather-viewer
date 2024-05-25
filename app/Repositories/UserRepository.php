@@ -10,12 +10,15 @@ use Illuminate\Support\Facades\Hash;
 
 class UserRepository
 {
-    public function addUser(CreateUserDTO $data): void
+    public function addUser(CreateUserDTO $data): User
     {
-        User::query()->create([
+        $user = new User();
+        $user->fill([
             'name' => $data->name,
             'email' => $data->email,
             'password' => Hash::make($data->password),
         ]);
+        $user->save();
+        return $user;
     }
 }

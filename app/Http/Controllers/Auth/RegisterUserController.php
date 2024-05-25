@@ -26,7 +26,7 @@ class RegisterUserController extends Controller
     public function store(StoreUserRequest $request): RedirectResponse
     {
         $validatedDTO = new CreateUserDTO($request->validated());
-        $this->userRepository->addUser($validatedDTO);
+        $newUser = $this->userRepository->addUser($validatedDTO);
 
         return redirect()->route('user.login')->with('status', 'User create successfully!');
     }
