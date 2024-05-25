@@ -8,7 +8,12 @@
         </div>
     @endguest
     @auth
-        @include('components.logout')
+        <div class="d-flex gap-4">
+            @include('components.logout')
+            @if (!Auth::user()->hasVerifiedEmail())
+                <a class="btn btn-light" href="{{ route('verification.notice') }}">Verify email</a>
+            @endif
+        </div>
     @endauth
 @endsection
 

@@ -6,6 +6,7 @@ use App\DTO\CreateUserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Repositories\UserRepository;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
@@ -28,6 +29,9 @@ class RegisterUserController extends Controller
         $validatedDTO = new CreateUserDTO($request->validated());
         $newUser = $this->userRepository->addUser($validatedDTO);
 
-        return redirect()->route('user.login')->with('status', 'User create successfully!');
+        event(new Registered($newUser));
+
+        return redirect()->route('user.login')
+            ->with('status', 'User create successfully. Check your email to verify address.');
     }
 }

@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginUserController;
 use App\Http\Controllers\Auth\RegisterUserController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,3 +36,7 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->nam
 
 Route::get('/reset-password', [ResetPasswordController::class, 'create'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'store'])->name('password.update');
+
+Route::get('/email/verify', EmailVerificationPromptController::class)->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)->name('verification.verify');
+Route::post('/email/verification-notification', EmailVerificationNotificationController::class)->name('verification.send');
