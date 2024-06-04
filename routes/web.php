@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginUserController;
 use App\Http\Controllers\Auth\RegisterUserController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Location\AddLocationController;
 use App\Http\Controllers\Location\SearchLocationController;
 use Illuminate\Support\Facades\Route;
 
@@ -66,5 +67,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/search', [SearchLocationController::class, 'show'])
         ->name('location.search');
+
+    Route::post('/location/add', [AddLocationController::class, 'store'])
+        ->name('location.add');
 
 });
