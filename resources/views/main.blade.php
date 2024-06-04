@@ -2,7 +2,9 @@
 
 @section('flash')
     @if (session('status'))
-        <div class="container alert alert-success mt-5">{{ session('status') }}</div>
+        <div class="container alert alert-{{ session('alert') ?? 'success' }} mt-5 text-center">
+            {{ session('status') }}
+        </div>
     @endif
 @endsection
 
@@ -11,17 +13,17 @@
         <a class="btn btn-light col-6" href="{{ route('login') }}">Login</a>
     @endguest
     @auth
-        <div class="d-flex gap-4">
-            @include('components.logout')
-            @if (!Auth::user()->hasVerifiedEmail())
-                <a class="btn btn-light" href="{{ route('verification.notice') }}">Verify email</a>
-            @endif
-        </div>
+        @include('components.logout')
+        @if (!Auth::user()->hasVerifiedEmail())
+            <a class="btn btn-light" href="{{ route('verification.notice') }}">Verify email</a>
+        @endif
     @endauth
 @endsection
 
 @section('content')
     @guest
-        <p class="h3 text-center text-body-tertiary">Please, login or register</p>
+        <div class="d-flex flex-wrap align-items-center justify-content-center">
+            <p class="h3 text-center text-body-tertiary">Please, login or register</p>
+        </div>
     @endguest
 @endsection

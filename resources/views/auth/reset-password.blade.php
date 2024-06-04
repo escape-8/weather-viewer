@@ -3,7 +3,7 @@
 @section('content')
     <div class="row col-5 border rounded px-4 py-4 mx-auto my-5 align-content-center shadow-sm">
         <a class="d-flex flex-column col-2 align-items-center mb-4 mt-3 px-5 mx-auto" href="{{ route('home') }}">
-            <img src="{{ asset('icon/weather-app.png') }}" alt="Logo" width="60" height="60" class="d-inline-block align-text-top">
+            <img src="{{  Vite::asset('resources/images/icon/weather-app.png') }}" alt="Logo" width="60" height="60" class="d-inline-block align-text-top">
         </a>
         <p class="h5 text-center text-secondary mb-45">New Password</p>
         <form class="d-flex flex-column" action="{{ route('password.update') }}" method="POST">
