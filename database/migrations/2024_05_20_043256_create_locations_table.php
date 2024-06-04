@@ -14,12 +14,9 @@ return new class extends Migration
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('user_id');
-            $table->decimal('latitude');
-            $table->decimal('longitude');
+            $table->decimal('latitude', 10, 7)->unique();
+            $table->decimal('longitude', 10, 7)->unique();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
