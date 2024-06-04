@@ -11,6 +11,7 @@
 @section('auth-buttons')
     @guest
         <a class="btn btn-light col-6" href="{{ route('login') }}">Login</a>
+        <a class="btn btn-light col-6" href="{{ route('user.create') }}">Register</a>
     @endguest
     @auth
         @include('components.logout')
