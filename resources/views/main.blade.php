@@ -22,6 +22,18 @@
 @endsection
 
 @section('content')
+    @auth
+        <div class="d-flex flex-column justify-content-between align-items-center gap-4 py-5 w-100">
+            <div class="d-flex flex-wrap justify-content-center w-100 column-gap-5 row-gap-4 mb-5">
+                @foreach($locations->items() as $id => $location)
+                    @include('components.location-card', ['location' => $location, 'id' => $id])
+                @endforeach
+            </div>
+            <div class="align-self-center">
+                {{ $locations->links() }}
+            </div>
+        </div>
+    @endauth
     @guest
         <div class="d-flex flex-wrap align-items-center justify-content-center">
             <p class="h3 text-center text-body-tertiary">Please, login or register</p>
