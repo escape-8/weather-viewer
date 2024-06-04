@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Location\AddLocationController;
 use App\Http\Controllers\Location\RemoveLocationController;
 use App\Http\Controllers\Location\SearchLocationController;
+use App\Http\Controllers\Weather\WeatherController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,9 +24,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('main');
-})->name('home');
+Route::get('/', [WeatherController::class, 'index'])
+    ->name('home');
+
+Route::post('/forecast', [WeatherController::class, 'show'])
+    ->name('weather.forecast');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterUserController::class, 'create'])
