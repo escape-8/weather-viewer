@@ -4,6 +4,11 @@
             <img src="{{ Vite::asset('resources/images/icon/weather-app.png') }}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
             Weather
         </a>
-        @yield('auth-buttons')
+        @auth
+            @include('components.search-bar')
+        @endauth
+        <div class="d-flex gap-4 align-items-center">
+            @yield('auth-buttons')
+        </div>
     </div>
 </nav>

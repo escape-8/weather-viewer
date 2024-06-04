@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginUserController;
 use App\Http\Controllers\Auth\RegisterUserController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Location\SearchLocationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,4 +63,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [LoginUserController::class, 'destroy'])
         ->name('user.logout');
+
+    Route::get('/search', [SearchLocationController::class, 'show'])
+        ->name('location.search');
+
 });
