@@ -23,3 +23,9 @@
 .w-12rem {
     width: 12rem;
 }
+
+@media (max-width: 350px) {
+    .fs-8 {
+        font-size: 0.8rem !important;
+    }
+}
