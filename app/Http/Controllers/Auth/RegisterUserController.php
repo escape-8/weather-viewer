@@ -31,7 +31,7 @@ class RegisterUserController extends Controller
 
         event(new Registered($newUser));
 
-        return redirect()->route('user.login')
+        return redirect()->route('login')
             ->with('status', 'User create successfully. Check your email to verify address.');
     }
 }

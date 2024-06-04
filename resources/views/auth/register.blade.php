@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('auth-buttons')
-    <a class="btn btn-light" href="{{ route('user.login') }}">Login</a>
+    <a class="btn btn-light col-12" href="{{ route('login') }}">Login</a>
 @endsection
 
 @section('content')

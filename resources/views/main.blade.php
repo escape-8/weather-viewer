@@ -8,10 +8,7 @@
 
 @section('auth-buttons')
     @guest
-        <div class="d-flex gap-2">
-            <a class="btn btn-light" href="{{ route('user.login') }}">Login</a>
-            <a class="btn btn-light" href="{{ route('user.create') }}">Register</a>
-        </div>
+        <a class="btn btn-light col-6" href="{{ route('login') }}">Login</a>
     @endguest
     @auth
         <div class="d-flex gap-4">

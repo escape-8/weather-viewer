@@ -32,7 +32,7 @@ Route::middleware('guest')->group(function () {
         ->name('user.store');
 
     Route::get('/login', [LoginUserController::class, 'create'])
-        ->name('user.login');
+        ->name('login');
 
     Route::post('/login', [LoginUserController::class, 'store'])
         ->name('user.auth');
