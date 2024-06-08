@@ -149,9 +149,50 @@ class WeatherApiServiceTest extends TestCase
         $weatherService = app(WeatherApiService::class);
         $this->expectException(HttpException::class);
         $weatherService->getLocationByCityName('Cheboksary');
+    }
 
+    public function testGetLocationByCityNameEmptyResult(): void
+    {
+        Http::shouldReceive('withQueryParameters')
+            ->with([
+                'q' => 'waeasd',
+                'limit' => 4,
+                'appid' => 'apikey',
+            ])
+            ->once()
+            ->andReturnSelf();
+
+        Http::shouldReceive('get')
+            ->with('https://api.openweathermap.org/geo/1.0/direct')
+            ->once()
+            ->andReturnSelf();
+
+        Http::shouldReceive('object')
+            ->once()
+            ->andReturn([]);
+
+        $response = Http::withQueryParameters([
+                'q' => 'waeasd',
+                'limit' => 4,
+                'appid' => 'apikey',
+            ]
+        )->get('https://api.openweathermap.org/geo/1.0/direct')
+         ->object();
+
+        $this->mock(WeatherApiService::class, function (MockInterface $mock) use ($response) {
+            $mock->shouldReceive('getLocationByCityName')
+                ->once()
+                ->with('waeasd')
+                ->andReturn($response);
+        });
+
+        $weatherService = app(WeatherApiService::class);
+        $result = $weatherService->getLocationByCityName('waeasd');
+
+        $this->assertEquals([], $result);
 
     }
+
     public function testGetWeatherByCoordinates(): void
     {
         $expected = $this->weatherApiFixtures->getFixture('GetWeatherByCoordinates');
