@@ -3,6 +3,8 @@
 namespace Feature\Services;
 
 use App\Services\WeatherApiService;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\Feature\Fixtures\WeatherApiFixtures;
 use Illuminate\Support\Facades\Http;
 use Mockery\MockInterface;
@@ -61,6 +63,95 @@ class WeatherApiServiceTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
+    public function testGetLocationByCityNameEmptyThrowBadRequestException400(): void
+    {
+        Http::shouldReceive('withQueryParameters')
+            ->with([
+                'q' => '',
+                'limit' => 4,
+                'appid' => 'apikey',
+            ])
+            ->once()
+            ->andReturnSelf();
+
+        Http::shouldReceive('get')
+            ->with('https://api.openweathermap.org/geo/1.0/direct')
+            ->once()
+            ->andReturnSelf();
+
+        Http::shouldReceive('status')
+            ->once()
+            ->andReturn(400);
+
+        $statusCode = Http::withQueryParameters([
+                'q' => '',
+                'limit' => 4,
+                'appid' => 'apikey',
+            ]
+        )->get('https://api.openweathermap.org/geo/1.0/direct')
+         ->status();
+
+        $this->mock(WeatherApiService::class, function (MockInterface $mock) use ($statusCode) {
+            $mock->shouldReceive('getLocationByCityName')
+                ->once()
+                ->with('')
+                ->andThrow(new BadRequestHttpException('Nothing to geocode', null , $statusCode));
+        });
+
+        $this->assertEquals(400, $statusCode);
+
+        $weatherService = app(WeatherApiService::class);
+        $this->expectException(BadRequestHttpException::class);
+        $weatherService->getLocationByCityName('');
+
+
+    }
+
+    public function testGetLocationByCityNameEmptyThrowHttpException401(): void
+    {
+        Http::shouldReceive('withQueryParameters')
+            ->with([
+                'q' => 'Cheboksary',
+                'limit' => 4,
+                'appid' => '',
+            ])
+            ->once()
+            ->andReturnSelf();
+
+        Http::shouldReceive('get')
+            ->with('https://api.openweathermap.org/geo/1.0/direct')
+            ->once()
+            ->andReturnSelf();
+
+
+        Http::shouldReceive('status')
+            ->once()
+            ->andReturn(401);
+
+        $statusCode = Http::withQueryParameters([
+                'q' => 'Cheboksary',
+                'limit' => 4,
+                'appid' => '',
+            ]
+        )->get('https://api.openweathermap.org/geo/1.0/direct')
+            ->status();
+
+
+        $this->mock(WeatherApiService::class, function (MockInterface $mock) use ($statusCode) {
+            $mock->shouldReceive('getLocationByCityName')
+                ->once()
+                ->with('Cheboksary')
+                ->andThrow(new HttpException($statusCode, 'Unauthorized weather request'));
+        });
+
+        $this->assertEquals(401, $statusCode);
+
+        $weatherService = app(WeatherApiService::class);
+        $this->expectException(HttpException::class);
+        $weatherService->getLocationByCityName('Cheboksary');
+
+
+    }
     public function testGetWeatherByCoordinates(): void
     {
         $expected = $this->weatherApiFixtures->getFixture('GetWeatherByCoordinates');
