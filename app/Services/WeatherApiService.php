@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class WeatherApiService
@@ -39,7 +39,8 @@ class WeatherApiService
 
         return match ($statusCode) {
             200 => $response->object(),
-            400 => throw new BadRequestException($response->object()->message, $statusCode),
+            400 => throw new BadRequestHttpException($response->object()->message, null , $statusCode),
+            401 => throw new HttpException($statusCode, 'Unauthorized weather request'),
             default => throw new HttpException($statusCode, $response->object()->message),
         };
     }

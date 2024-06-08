@@ -7,7 +7,8 @@ use App\Services\WeatherApiService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Illuminate\Validation\UnauthorizedException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SearchLocationController extends Controller
@@ -24,15 +25,19 @@ class SearchLocationController extends Controller
         try {
             $locations = $this->apiService->getLocationByCityName($request->get('location'));
             if (empty($locations)) {
-                return back()
-                    ->with('status', 'Nothing found')
-                    ->with('alert', 'danger');
+                return response()->view(
+                    'page.search-result',
+                    ['searchError' => 'Nothing found'],
+                    404
+                );
             }
             return response()->view('page.search-result', ['locations' => $locations]);
-        } catch (BadRequestException|HttpException $e) {
-            return back()
-                ->with('status', $e->getMessage())
-                ->with('alert', 'danger');
+        } catch (BadRequestHttpException|HttpException|UnauthorizedException $e) {
+            return response()->view(
+                'page.search-result',
+                ['searchError' => $e->getMessage()],
+                $e->getStatusCode()
+            );
         }
     }
 }
