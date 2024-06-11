@@ -19,7 +19,7 @@
             <div class="d-flex flex-row text-center my-2 gap-3 align-items-center">
                 <h6 class="display-4 mb-0 font-weight-bold"> {{ round($location->main->temp) }}°C </h6>
                 <div>
-                    <img src="{{ Vite::asset('resources/images/weather-icons/' . $location->weather[0]->icon) . '.png'  }}" alt="weather-icon"
+                    <img src="{{ Vite::asset('resources/images/weather-icons/' . $location->weather[0]->icon . '.png') }}" alt="weather-icon"
                          width="70px">
                 </div>
                 <div class="d-flex flex-column align-items-start">

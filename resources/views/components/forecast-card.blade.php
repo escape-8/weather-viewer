@@ -5,7 +5,7 @@
             <p class="text-secondary mb-1">{{ date('H:i', $forecastItem->dt + $timezone) }}</p>
         </div>
         <img class="align-self-center"
-             src="{{ Vite::asset('resources/images/weather-icons/' . $forecastItem->weather[0]->icon) . '.png'  }}"
+             src="{{ Vite::asset('resources/images/weather-icons/' . $forecastItem->weather[0]->icon . '.png') }}"
              alt="weather-icon"
              width="70px">
         <p class="text-secondary text-center fs-6 mb-1">{{ ucfirst($forecastItem->weather[0]->description) }}</p>
