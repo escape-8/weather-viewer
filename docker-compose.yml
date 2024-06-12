@@ -14,9 +14,6 @@ services:
 
     app:
         build:
-            args:
-                user: ${USER}
-                uid: ${UID}
             context: .
             dockerfile: docker/app/Dockerfile
         volumes:
