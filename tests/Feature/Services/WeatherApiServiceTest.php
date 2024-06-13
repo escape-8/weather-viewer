@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Services;
+namespace Tests\Feature\Services;
 
 use App\Services\WeatherApiService;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
