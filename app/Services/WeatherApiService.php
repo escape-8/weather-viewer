@@ -20,7 +20,7 @@ class WeatherApiService
 
     public function __construct()
     {
-        $this->apiKey = env('WEATHER_API_KEY');
+        $this->apiKey = config('app.weather_api_key');
         $this->geoLink = 'https://api.openweathermap.org/geo/1.0/direct';
         $this->weatherLink = 'https://api.openweathermap.org/data/2.5/weather';
         $this->forecastLink = 'https://api.openweathermap.org/data/2.5/forecast';

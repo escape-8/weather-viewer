@@ -185,4 +185,14 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Weather API key
+    |--------------------------------------------------------------------------
+    |
+    | Weather API Access Key.
+    |
+    */
+
+    'weather_api_key' => env('WEATHER_API_KEY'),
 ];
