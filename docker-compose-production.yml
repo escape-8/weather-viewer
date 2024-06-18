@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/production/nginx/nginx-prod.Dockerfile
+    volumes:
+       - ./docker/production/nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      - "8885:80"
+    depends_on:
+      - app
+    container_name: nginx
+    networks:
+      - prod
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/production/app/php-prod.Dockerfile
+    volumes:
+      - ./docker/production/app/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./docker/production/app/docker-php-entrypoint/:/tmp/docker-php-entrypoint/
+    depends_on:
+      - db
+    container_name: app
+    networks:
+      - prod
+
+  db:
+    image: postgres:14.12
+    restart: always
+    user: root:www-data
+    volumes:
+      - weather-psql-data:/var/lib/postgresql/data
+      - ./docker/production/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - "8886:5432"
+    container_name: database
+    networks:
+      - prod
+
+volumes:
+  weather-psql-data:
+    driver: local
+
+networks:
+  prod:
