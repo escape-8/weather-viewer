@@ -79,8 +79,6 @@ services:
       dockerfile: docker/development/app/php-dev.Dockerfile
     volumes:
       - ./:/var/www/html:delegated
-    depends_on:
-      - db
     entrypoint: ["php", "/var/www/html/artisan"]
     container_name: artisan
     networks:
