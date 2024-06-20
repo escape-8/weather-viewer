@@ -41,9 +41,14 @@ A web application for viewing the current weather. The user can register and add
 ### Common
 ```
 git clone https://github.com/escape-8/weather-viewer.git
+```
+```
 cp .env.example .env
 ```
 Open .env and fill in the following fields
+```
+APP_NAME="Weather Viewer"
+```
 ```
 WEATHER_API_KEY=""your_key"
 ```
@@ -69,9 +74,17 @@ MAIL_FROM_NAME="${APP_NAME}"
 ### Local
 ```
 docker compose up -d --build
+```
+```
 docker compose run composer install
+```
+```
 docker compose run artisan migrate
+```
+```
 docker compose run artisan key:generate
+```
+```
 docker compose run npm install && npm run build
 ```
 
