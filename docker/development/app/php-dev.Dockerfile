@@ -1,8 +1,11 @@
 FROM php:8.1.28-fpm
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
-COPY ./docker/app/php.ini /usr/local/etc/php/conf.d/php.ini
+ARG user
+ARG uid
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update && apt-get install -y \
       apt-utils \
@@ -11,8 +14,7 @@ RUN apt-get update && apt-get install -y \
       curl \
       nano \
       libzip-dev \
-      zip unzip \
-      git && \
+      zip unzip && \
       docker-php-ext-install pdo_pgsql  && \
       docker-php-ext-install bcmath && \
       docker-php-ext-install gd && \
@@ -20,13 +22,6 @@ RUN apt-get update && apt-get install -y \
       apt-get clean && \
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Install composer
-ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN curl -sS https://getcomposer.org/installer | php -- \
-    --filename=composer \
-    --install-dir=/usr/local/bin
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
 
-RUN chown -R :www-data /var/www
-
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt-get install -y nodejs
+USER $user

@@ -1,37 +1,94 @@
 version: '3.9'
 
 services:
-    nginx:
-        image: nginx:latest
-        volumes:
-            - ./:/var/www/
-            - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
-        ports:
-            - "8885:80"
-        container_name: project_nginx
-        depends_on:
-            - app
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./:/var/www/html
+      - ./docker/development/nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      - "8885:80"
+    container_name: nginx
+    depends_on:
+      - app
+    networks:
+      - dev
 
-    app:
-        build:
-            context: .
-            dockerfile: docker/app/Dockerfile
-        volumes:
-            - ./:/var/www/
-        container_name: project_app
-        depends_on:
-            - db
+  app:
+    build:
+      args:
+        user: ${USER}
+        uid: ${UID:-1000}
+      context: .
+      dockerfile: docker/development/app/php-dev.Dockerfile
+    volumes:
+      - ./:/var/www/html:delegated
+      - ./docker/development/app/php-dev.ini:/usr/local/etc/php/conf.d/php.ini
+    container_name: app
+    depends_on:
+      - db
+    networks:
+      - dev
 
-    db:
-        image: postgres:14.12
-        restart: always
-        volumes:
-            - ./docker/db/data:/var/lib/postgresql/data
-            - ./docker/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-        environment:
-            POSTGRES_USER: ${DB_USERNAME}
-            POSTGRES_PASSWORD: ${DB_PASSWORD}
-            POSTGRES_DB: ${DB_DATABASE}
-        ports:
-            - "8886:5432"
-        container_name: project_db
+  db:
+    image: postgres:14.12
+    restart: always
+    volumes:
+      - weather-psql-data-dev:/var/lib/postgresql/data
+      - ./docker/development/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - "8886:5432"
+    container_name: database
+    networks:
+      - dev
+
+  composer:
+    build:
+      context: .
+      dockerfile: docker/development/composer/composer.Dockerfile
+    volumes:
+      - ./:/var/www/html
+    container_name: composer
+    networks:
+      - dev
+
+  npm:
+    image: node:latest
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+      - "5173:5173"
+    working_dir: /var/www/html
+    entrypoint: ["npm"]
+    container_name: npm
+    networks:
+      - dev
+
+  artisan:
+    build:
+      args:
+        user: ${USER}
+        uid: ${UID:-1000}
+      context: .
+      dockerfile: docker/development/app/php-dev.Dockerfile
+    volumes:
+      - ./:/var/www/html:delegated
+    depends_on:
+      - db
+    entrypoint: ["php", "/var/www/html/artisan"]
+    container_name: artisan
+    networks:
+      - dev
+
+volumes:
+  weather-psql-data-dev:
+    driver: local
+
+networks:
+  dev:
