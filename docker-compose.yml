@@ -24,6 +24,10 @@ services:
     volumes:
       - ./:/var/www/html:delegated
       - ./docker/development/app/php-dev.ini:/usr/local/etc/php/conf.d/php.ini
+    environment:
+        PHP_IDE_CONFIG: "serverName=Xdebug"
+    extra_hosts:
+        - "host.docker.internal:host-gateway"
     container_name: app
     depends_on:
       - db
