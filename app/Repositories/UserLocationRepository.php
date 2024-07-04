@@ -29,7 +29,7 @@ class UserLocationRepository
     public function getCoordinateLocationsByUser(Authenticatable $user): LengthAwarePaginator
     {
         /** @var User $user **/
-        return $user->locations()->paginate(4, ['latitude', 'longitude']);
+        return $user->locations()->paginate(4, ['name', 'latitude', 'longitude']);
     }
 
     public function checkIfUserHasLocation(UserLocationDTO $userLocationDTO): void

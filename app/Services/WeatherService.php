@@ -32,6 +32,8 @@ class WeatherService
                 $coordinatesLocation->getAttribute('latitude'),
                 $coordinatesLocation->getAttribute('longitude')
             );
+            $locations[$coordinatesLocation->getOriginal('pivot_location_id')]
+                ->name = $coordinatesLocation->getAttribute('name');
         }
         return new LengthAwarePaginator($locations, $countUserLocations, 4);
     }
