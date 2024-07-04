@@ -87,5 +87,9 @@ docker compose run artisan key:generate
 ```
 docker compose run npm install && npm run build
 ```
+For frontend dev-server. The development server automatically opens changes to your files and instantly displays them in any open browser windows.
+```
+docker compose run -p 5173:5173 --rm npm run dev -- --host
+```
 
 Check in browser localhost:8885
