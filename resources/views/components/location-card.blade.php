@@ -51,10 +51,8 @@
                 </div>
             </div>
             <hr class="my-4" />
-            <form class="d-flex justify-content-center mb-0" action="{{ route('weather.forecast') }}" method="POST">
+            <form class="d-flex justify-content-center mb-0" action="{{ route('weather.forecast', $id) }}" method="GET">
                 @csrf
-                <input type="hidden" name="latitude" value="{{ $location->coord->lat }}">
-                <input type="hidden" name="longitude" value="{{ $location->coord->lon }}">
                 <button type="submit" class="btn btn-primary d-flex justify-content-center col-6" href="">View Forecast</button>
             </form>
         </div>

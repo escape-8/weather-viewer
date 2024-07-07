@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers\Weather;
 
-use App\DTO\ForecastDTO;
 use App\Http\Controllers\Controller;
-use App\Services\WeatherApiService;
 use App\Services\WeatherService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class WeatherController extends Controller
 {
-    private WeatherApiService $weatherApi;
     private WeatherService $weatherService;
 
-    public function __construct(WeatherService $weatherService, WeatherApiService $weatherApi)
+    public function __construct(WeatherService $weatherService)
     {
         $this->weatherService = $weatherService;
-        $this->weatherApi = $weatherApi;
     }
 
     public function index(): Response
@@ -32,10 +27,4 @@ class WeatherController extends Controller
         return response()->view('main');
     }
 
-    public function show(Request $request): Response
-    {
-        $forecastDTO = new ForecastDTO($request->all());
-        $forecast = $this->weatherApi->getForecastWeatherByCoordinates($forecastDTO->latitude, $forecastDTO->longitude);
-        return response()->view('page.forecast', compact('forecast'));
-    }
 }

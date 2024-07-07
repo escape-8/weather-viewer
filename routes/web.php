@@ -11,6 +11,7 @@ use App\Http\Controllers\Location\AddLocationController;
 use App\Http\Controllers\Location\RemoveLocationController;
 use App\Http\Controllers\Location\SearchLocationController;
 use App\Http\Controllers\Weather\WeatherController;
+use App\Http\Controllers\Weather\WeatherForecastController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,9 +27,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WeatherController::class, 'index'])
     ->name('home');
-
-Route::post('/forecast', [WeatherController::class, 'show'])
-    ->name('weather.forecast');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterUserController::class, 'create'])
@@ -57,6 +55,9 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/forecast/{id}', [WeatherForecastController::class, 'show'])
+        ->name('weather.forecast');
+
     Route::get('/email/verify', EmailVerificationPromptController::class)
         ->name('verification.notice');
 

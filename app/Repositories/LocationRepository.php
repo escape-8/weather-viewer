@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\DTO\LocationDTO;
 use App\Models\Location;
+use Illuminate\Database\Eloquent\Model;
 
 class LocationRepository
 {
@@ -19,5 +20,10 @@ class LocationRepository
             ],
         );
         return $location->getAttribute('id');
+    }
+
+    public function getById(int $id): Model
+    {
+        return Location::query()->find($id, ['name', 'latitude', 'longitude']);
     }
 }
