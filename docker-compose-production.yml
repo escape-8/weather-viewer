@@ -7,6 +7,7 @@ services:
       dockerfile: docker/production/nginx/nginx-prod.Dockerfile
     volumes:
        - ./docker/production/nginx/conf.d/:/etc/nginx/conf.d/
+    restart: unless-stopped
     ports:
       - "8885:80"
     depends_on:
@@ -22,6 +23,7 @@ services:
     volumes:
       - ./docker/production/app/php.ini:/usr/local/etc/php/conf.d/php.ini
       - ./docker/production/app/docker-php-entrypoint/:/tmp/docker-php-entrypoint/
+    restart: unless-stopped
     depends_on:
       - db
     container_name: app
