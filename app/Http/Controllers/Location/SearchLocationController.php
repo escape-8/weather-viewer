@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Location;
 
 use App\Http\Controllers\Controller;
 use App\Services\WeatherApiService;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -38,6 +39,10 @@ class SearchLocationController extends Controller
                 ['searchError' => $e->getMessage()],
                 $e->getStatusCode()
             );
+        } catch (ConnectionException) {
+            session()->flash('status', 'The weather service is temporarily unavailable, please try again later.');
+            session()->flash('alert', 'danger');
+            return response()->view('page.search-result', [], 503);
         }
     }
 }
