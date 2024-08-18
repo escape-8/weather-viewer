@@ -25,12 +25,16 @@
     @auth
         <div class="d-flex flex-column justify-content-between align-items-center gap-4 py-5 w-100">
             <div class="d-flex flex-wrap justify-content-center w-100 column-gap-5 row-gap-4 mb-5">
-                @foreach($locations->items() as $id => $location)
-                    @include('components.location-card', ['location' => $location, 'id' => $id])
-                @endforeach
+                @isset($locations)
+                    @foreach($locations->items() as $id => $location)
+                        @include('components.location-card', ['location' => $location, 'id' => $id])
+                    @endforeach
+                @endisset
             </div>
             <div class="align-self-center">
-                {{ $locations->links() }}
+                @isset($locations)
+                    {{ $locations->links() }}
+                @endisset
             </div>
         </div>
     @endauth
